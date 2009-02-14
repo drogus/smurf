@@ -1,31 +1,15 @@
 module Smurf
-  def self.minify_assets(type, content)
-    tmp = File.join(RAILS_ROOT, "tmp/minified.#{type}")
+  def self.minify_assets(filename)
     compressor = File.join(RAILS_ROOT, 'vendor/plugins/smurf/bin/yuicompressor.jar')
-    file = File.open(tmp, "w")
-    file.write(content)
-    file.close
-    output = `java -jar #{compressor} #{tmp}`
-    File.unlink(tmp)
-    output
+    `java -jar #{compressor} #{filename} -o #{filename}`
+  end
+end
+
+module ActionView::Helpers::AssetTagHelper
+  def write_asset_file_contents_with_packaging(joined_asset_path, asset_paths)
+    write_asset_file_contents_without_packaging(joined_asset_path, asset_paths)
+    Smurf.minify_assets(joined_asset_path)
   end
 
-  module JavaScriptSources
-  private
-    def joined_contents
-      Smurf.minify_assets('js', super)
-    end
-  end # JavaScriptSources
-
-  module StylesheetSources
-  private
-    def joined_contents
-      Smurf.minify_assets('css', super)
-    end
-  end # StylesheetSources
-
-end # ActionView::Helpers::AssetTagHelper::AssetTag
-ActionView::Helpers::AssetTagHelper::JavaScriptSources.send(
-  :include, Smurf::JavaScriptSources)
-ActionView::Helpers::AssetTagHelper::StylesheetSources.send(
-  :include, Smurf::StylesheetSources)
+  alias_method_chain :write_asset_file_contents, :packaging
+end
