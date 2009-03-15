@@ -1,7 +1,7 @@
 module Smurf
   def self.minify_assets(filename)
     compressor = File.join(RAILS_ROOT, 'vendor/plugins/smurf/bin/yuicompressor.jar')
-    `java -jar #{compressor} #{filename} -o #{filename}`
+    `java -jar #{compressor} #{filename} -o #{filename} --charset UTF-8`
   end
 end
 
