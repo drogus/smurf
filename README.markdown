@@ -1,8 +1,12 @@
+# About this fork
+
+In this fork of smurf I've changed JSMin and CSS Compressor to YUI compressor. Everything else should work as in original smurf.
+
 # Smurf
 
 Smurf is a Rails plugin that does Javascript and CSS minification the way you would expect. See, with Rails `2.x` we got this cool new `:cache` option on `javascript_include_tag` and `stylesheet_link_tag`, but no option for minifying the cached file(s).
 
-Smurf ends that. Smurf - if installed and when caching is enabled for the environment - will nab the concatenated file content from Rails just before it saves it and minifies the content using either JSmin or a custom CSS compressor.
+Smurf ends that. Smurf - if installed and when caching is enabled for the environment - will nab the concatenated file content from Rails just before it saves it and minifies the content using YUI compressor
 
 Some cool things about Smurf, which also allude to the reasons I wrote it:
 
@@ -11,24 +15,6 @@ Some cool things about Smurf, which also allude to the reasons I wrote it:
 * It requires absolutely no configuration
 * Other than installing it, you don't need to do anything
 * It just gets out of your way
-
-Smurf will work with any version of Rails `2.x`; including Rails `2.2.2`.
-
-### JSmin
-
-It's really an adaptation of Uladzislau Latynski's [jsmin.rb](http://javascript.crockford.com/jsmin.rb) port of Douglas Crockford's [jsmin.c](http://javascript.crockford.com/jsmin.c) library.
-
-### Smurf CSS Compressor
-
-The following are the rules I applied, gathered from various perusals around the Internet*s*
-
-1. Replace consecutive whitespace characters with a single space
-2. Remove whitespace around opening brackets
-3. Remove whitespace in front of closing brackets
-4. Remove the semi-colon just before the closing bracket
-5. Remove comments between `/* ... */` - this could be a problem (esp. for CSS hacks)
-6. Remove spaces around `;`, `:`, and `,` characters
-7. Ensure whitespace between closing brackets and periods
 
 ## Installation
 
